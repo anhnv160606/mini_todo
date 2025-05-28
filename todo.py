@@ -2,16 +2,17 @@ class TodoList:
     def __init__(self):
         self.tasks = []
 
-    def add_task(self, task):
-        self.tasks.append({"task": task, "done": False})
+    def add_task(self, task_name):
+        if not task_name.strip():
+            raise ValueError("Tên công việc không được trống!")
+        self.tasks.append({"name": task_name, "done": False})
 
     def list_tasks(self):
-        return self.tasks
+        if not self.tasks:
+            return "Danh sách công việc trống!"
 
-    def mark_done(self, task_index):
-        if 0 <= task_index < len(self.tasks):
-            self.tasks[task_index]["done"] = True
-
-    def delete_task(self, task_index):
-        if 0 <= task_index < len(self.tasks):
-            del self.tasks[task_index]
+        task_list = []
+        for idx, task in enumerate(self.tasks, start=1):
+            status = "✓" if task["done"] else "✗"
+            task_list.append(f"{idx}. {task['name']} [{status}]")
+        return "\n".join(task_list)
